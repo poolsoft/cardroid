@@ -21,6 +21,7 @@ import de.jlab.cardroid.car.ManageableCarSystem;
 import de.jlab.cardroid.car.RemoteControl;
 import de.jlab.cardroid.car.UnknownCarSystemException;
 import de.jlab.cardroid.overlay.OverlayWindow;
+import de.jlab.cardroid.storage.CarDroidDataOpenHelper;
 import de.jlab.cardroid.usb.MetaEvent;
 import de.jlab.cardroid.usb.MetaSerialPacket;
 import de.jlab.cardroid.usb.SerialCarButtonEventPacket;
@@ -41,6 +42,17 @@ public class MainService extends Service implements ManageableCarSystem.CarSyste
     private class RemoteControlChangeListener implements CarSystem.ChangeListener<RemoteControl> {
         @Override
         public void onChange(RemoteControl system) {
+            int remoteControlId = system.getControlId();
+            int buttonId = system.getButtonId();
+
+            CarDroidDataOpenHelper dataHelper = new CarDroidDataOpenHelper(MainService.this);
+            if (!dataHelper.remoteControlExists(remoteControlId)) {
+                dataHelper.createOrUpdateRemoteControl(null, remoteControlId);
+            }
+            if (!dataHelper.remoteButtonExists(buttonId)) {
+                dataHelper.createOrUpdateRemoteButton(null, buttonId, remoteControlId);
+            }
+
             Log.d(LOG_TAG, "Button pressed " + system.getButtonId());
             switch (system.getButtonId()) {
                 case 1: // SOURCE
