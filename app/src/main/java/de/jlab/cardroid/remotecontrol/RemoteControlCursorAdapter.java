@@ -2,8 +2,6 @@ package de.jlab.cardroid.remotecontrol;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,8 @@ import de.jlab.cardroid.storage.CarDroidDataOpenHelper;
 public class RemoteControlCursorAdapter extends CursorTreeAdapter {
 
     private Context context;
-    private View.OnClickListener mSecondaryClickListener;
+    private View.OnClickListener secondaryItemClickListener;
+    private View.OnClickListener secondaryChildClickListener;
 
     static class ViewHolder {
         TextView name;
@@ -47,7 +46,7 @@ public class RemoteControlCursorAdapter extends CursorTreeAdapter {
         holder.details = (TextView) view.findViewById(R.id.details);
         holder.delete = (ImageView) view.findViewById(R.id.delete);
 
-        holder.delete.setOnClickListener(mSecondaryClickListener);
+        holder.delete.setOnClickListener(secondaryItemClickListener);
         view.setTag(holder);
         return view;
     }
@@ -69,7 +68,7 @@ public class RemoteControlCursorAdapter extends CursorTreeAdapter {
         holder.details = (TextView) view.findViewById(R.id.details);
         holder.delete = (ImageView) view.findViewById(R.id.delete);
 
-        holder.delete.setOnClickListener(mSecondaryClickListener);
+        holder.delete.setOnClickListener(secondaryChildClickListener);
         view.setTag(holder);
         return view;
     }
@@ -84,6 +83,10 @@ public class RemoteControlCursorAdapter extends CursorTreeAdapter {
     }
 
     public void setSecondaryItemClickListener(View.OnClickListener secondaryClickListener) {
-        mSecondaryClickListener = secondaryClickListener;
+        secondaryItemClickListener = secondaryClickListener;
+    }
+
+    public void setSecondaryChildClickListener(View.OnClickListener secondaryClickListener) {
+        secondaryChildClickListener = secondaryClickListener;
     }
 }

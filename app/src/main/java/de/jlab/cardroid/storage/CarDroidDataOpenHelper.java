@@ -107,4 +107,10 @@ public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public void deleteRemoteButton(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(CarDroidDataContract.RemoteButton.TABLE_NAME, CarDroidDataContract.RemoteButton._ID + "=" + id, null);
+        db.close();
+    }
 }

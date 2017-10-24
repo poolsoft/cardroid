@@ -32,9 +32,6 @@ public class RemoteControlManagerActivity extends AppCompatActivity {
         dataHelper.createOrUpdateRemoteButton("Voice", 5, 128);
         dataHelper.createOrUpdateRemoteButton("SRC", 6, 128);
 
-        Cursor testCursor = dataHelper.listRemoteControls();
-
-
         final ExpandableListView remoteControlList = (ExpandableListView) findViewById(R.id.remote_control_list);
         this.remoteControlAdapter = new RemoteControlCursorAdapter(dataHelper.listRemoteControls(), this);
         remoteControlList.setAdapter(this.remoteControlAdapter);
@@ -42,13 +39,28 @@ public class RemoteControlManagerActivity extends AppCompatActivity {
         this.remoteControlAdapter.setSecondaryItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = remoteControlList.getPositionForView(v);
-                Cursor cursor = RemoteControlManagerActivity.this.remoteControlAdapter.getCursor();
-                cursor.moveToPosition(position);
-                long id = cursor.getLong(cursor.getColumnIndex(CarDroidDataContract.RemoteControl._ID));
+                long pos = remoteControlList.getExpandableListPosition(remoteControlList.getPositionForView(v));
+                long remoteControlId = remoteControlAdapter.getGroupId(
+                        ExpandableListView.getPackedPositionGroup(pos)
+                );
 
                 CarDroidDataOpenHelper dataHelper = new CarDroidDataOpenHelper(RemoteControlManagerActivity.this);
-                dataHelper.deleteRemoteControl(id);
+                dataHelper.deleteRemoteControl(remoteControlId);
+                RemoteControlManagerActivity.this.remoteControlAdapter.notifyDataSetChanged();
+            }
+        });
+
+        this.remoteControlAdapter.setSecondaryChildClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long pos = remoteControlList.getExpandableListPosition(remoteControlList.getPositionForView(v));
+                long remoteButtonId = remoteControlAdapter.getChildId(
+                        ExpandableListView.getPackedPositionGroup(pos),
+                        ExpandableListView.getPackedPositionChild(pos)
+                );
+
+                CarDroidDataOpenHelper dataHelper = new CarDroidDataOpenHelper(RemoteControlManagerActivity.this);
+                dataHelper.deleteRemoteButton(remoteButtonId);
                 RemoteControlManagerActivity.this.remoteControlAdapter.notifyDataSetChanged();
             }
         });

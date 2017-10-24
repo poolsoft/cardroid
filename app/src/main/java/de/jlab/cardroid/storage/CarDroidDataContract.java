@@ -30,7 +30,7 @@ public final class CarDroidDataContract {
                         _ID + " INTEGER PRIMARY KEY," +
                         COLUMN_NAME_NAME + " TEXT," +
                         COLUMN_NAME_REMOTE_ID + " INTEGER," +
-                        " FOREIGN KEY (" + COLUMN_NAME_REMOTE_ID + ") REFERENCES " + RemoteControl.TABLE_NAME + "(" + RemoteControl._ID + ")" +
+                        " FOREIGN KEY (" + COLUMN_NAME_REMOTE_ID + ") REFERENCES " + RemoteControl.TABLE_NAME + "(" + RemoteControl._ID + ") ON DELETE CASCADE" +
                     " )";
         public static final String SQL_DELETE =
                 "DROP TABLE IF EXISTS " + TABLE_NAME;
