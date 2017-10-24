@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.HashMap;
+
 public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
@@ -80,28 +82,29 @@ public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
         return db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID}, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID + "=" + remoteControlId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
     }
 
-    public boolean remoteButtonExists(long serialId) {
+    public boolean remoteButtonExists(long serialId, long remoteControlId) {
         final SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID}, CarDroidDataContract.RemoteButton._ID + "=" + serialId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
+        Cursor cursor = db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID}, CarDroidDataContract.RemoteButton.COLUMN_NAME_SERIAL_ID + "=" + serialId + " AND " + CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID + "=" + remoteControlId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
         boolean exists = cursor.getCount() > 0;
         cursor.close();
         db.close();
         return exists;
     }
 
-    public void createOrUpdateRemoteButton(String name, long id, long remoteControlId) {
+    public void createOrUpdateRemoteButton(String name, String action, long serialId, long remoteControlId) {
         ContentValues values = new ContentValues();
-        values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, name != null ? name : Long.toString(id));
-        values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID, remoteControlId);
+        values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, name != null ? name : Long.toString(serialId));
+        values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_ACTION, action);
 
-        boolean remoteButtonExists = remoteButtonExists(id);
+        boolean remoteButtonExists = remoteButtonExists(serialId, remoteControlId);
 
         SQLiteDatabase db = this.getWritableDatabase();
         if (remoteButtonExists) {
-            db.update(CarDroidDataContract.RemoteButton.TABLE_NAME, values, CarDroidDataContract.RemoteButton._ID + "=" + id, null);
+            db.update(CarDroidDataContract.RemoteButton.TABLE_NAME, values, CarDroidDataContract.RemoteButton.COLUMN_NAME_SERIAL_ID + "=" + serialId + " AND " + CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID + "=" + remoteControlId, null);
         }
         else {
-            values.put(CarDroidDataContract.RemoteControl._ID, id);
+            values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_SERIAL_ID, serialId);
+            values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID, remoteControlId);
             db.insertOrThrow(CarDroidDataContract.RemoteButton.TABLE_NAME, null, values);
         }
 
@@ -112,5 +115,22 @@ public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(CarDroidDataContract.RemoteButton.TABLE_NAME, CarDroidDataContract.RemoteButton._ID + "=" + id, null);
         db.close();
+    }
+
+    public String getButtonActionIdentifer(long serialId, long remoteControlId) {
+        final SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton.COLUMN_NAME_ACTION}, CarDroidDataContract.RemoteButton.COLUMN_NAME_SERIAL_ID + "=" + serialId + " AND " + CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID + "=" + remoteControlId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
+        String identifier = null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            identifier = cursor.getString(cursor.getColumnIndex(CarDroidDataContract.RemoteButton.COLUMN_NAME_ACTION));
+        }
+        cursor.close();
+        db.close();
+        return identifier;
+    }
+
+    public HashMap<String, String> getButtonActionProperties(long serialId, long remoteControlId) {
+        return new HashMap<>(); // TODO FILL HASHMAP FROM DATABASE
     }
 }

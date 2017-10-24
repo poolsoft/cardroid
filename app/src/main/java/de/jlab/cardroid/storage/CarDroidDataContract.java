@@ -22,6 +22,8 @@ public final class CarDroidDataContract {
     public static abstract class RemoteButton implements BaseColumns {
         public static final String TABLE_NAME = "remote_button";
         public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_ACTION = "action";
+        public static final String COLUMN_NAME_SERIAL_ID = "serial_id";
         public static final String COLUMN_NAME_REMOTE_ID = "remote_id";
 
         public static final String SQL_CREATE =
@@ -29,6 +31,8 @@ public final class CarDroidDataContract {
                     " (" +
                         _ID + " INTEGER PRIMARY KEY," +
                         COLUMN_NAME_NAME + " TEXT," +
+                        COLUMN_NAME_ACTION + " TEXT," +
+                        COLUMN_NAME_SERIAL_ID + " INTEGER," +
                         COLUMN_NAME_REMOTE_ID + " INTEGER," +
                         " FOREIGN KEY (" + COLUMN_NAME_REMOTE_ID + ") REFERENCES " + RemoteControl.TABLE_NAME + "(" + RemoteControl._ID + ") ON DELETE CASCADE" +
                     " )";
