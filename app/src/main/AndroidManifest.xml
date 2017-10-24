@@ -32,6 +32,7 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
+        <activity android:name=".remotecontrol.RemoteControlManagerActivity" android:launchMode="singleTop" android:label="@string/pref_title_remotes" />
         <activity android:name=".cansniffer.CanSnifferActivity" android:launchMode="singleTop" android:label="@string/pref_title_can_sniffer">
             <intent-filter>
                 <action android:name="your.action.string"/>

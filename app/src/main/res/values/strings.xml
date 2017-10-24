@@ -48,6 +48,9 @@
 -->
     </string-array>
 
+    <string name="pref_title_remotes">Remote Controls</string>
+    <string name="pref_description_remotes">Manage external remote controls</string>
+
     <string name="pref_title_can_sniffer">CAN Sniffer</string>
     <string name="pref_description_can_sniffer">Directly read CAN packets from the car</string>
 </resources>

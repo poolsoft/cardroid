@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "HombotControl.db";
+    public static final String DATABASE_NAME = "Cardroid.db";
 
     public CarDroidDataOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,7 +43,7 @@ public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
 
     public boolean remoteControlExists(long serialId) {
         final SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(CarDroidDataContract.RemoteControl.TABLE_NAME, new String[]{CarDroidDataContract.RemoteControl._ID}, null, new String[0], null, null, CarDroidDataContract.RemoteControl.COLUMN_NAME_NAME);
+        Cursor cursor = db.query(CarDroidDataContract.RemoteControl.TABLE_NAME, new String[]{CarDroidDataContract.RemoteControl._ID}, CarDroidDataContract.RemoteControl._ID + "=" + serialId, new String[0], null, null, CarDroidDataContract.RemoteControl.COLUMN_NAME_NAME);
         boolean exists = cursor.getCount() > 0;
         cursor.close();
         db.close();
@@ -51,25 +51,60 @@ public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
     }
 
     public void createOrUpdateRemoteControl(String name, long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(CarDroidDataContract.RemoteControl.COLUMN_NAME_NAME, name != null ? name : Long.toString(id));
 
-        if (remoteControlExists(id)) {
+        boolean remoteControlExists = remoteControlExists(id);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (remoteControlExists) {
             db.update(CarDroidDataContract.RemoteControl.TABLE_NAME, values, CarDroidDataContract.RemoteControl._ID + "=" + id, null);
         }
         else {
             values.put(CarDroidDataContract.RemoteControl._ID, id);
             db.insertOrThrow(CarDroidDataContract.RemoteControl.TABLE_NAME, null, values);
         }
-
         db.close();
     }
 
     public void deleteRemoteControl(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(CarDroidDataContract.RemoteControl.TABLE_NAME, CarDroidDataContract.RemoteControl._ID + "=" + id, null);
+        db.close();
+    }
+
+    //////
+
+    public Cursor listRemoteButtons(long remoteControlId) {
+        final SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID}, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID + "=" + remoteControlId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
+    }
+
+    public boolean remoteButtonExists(long serialId) {
+        final SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID}, CarDroidDataContract.RemoteButton._ID + "=" + serialId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
+    public void createOrUpdateRemoteButton(String name, long id, long remoteControlId) {
+        ContentValues values = new ContentValues();
+        values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, name != null ? name : Long.toString(id));
+        values.put(CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID, remoteControlId);
+
+        boolean remoteButtonExists = remoteButtonExists(id);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (remoteButtonExists) {
+            db.update(CarDroidDataContract.RemoteButton.TABLE_NAME, values, CarDroidDataContract.RemoteButton._ID + "=" + id, null);
+        }
+        else {
+            values.put(CarDroidDataContract.RemoteControl._ID, id);
+            db.insertOrThrow(CarDroidDataContract.RemoteButton.TABLE_NAME, null, values);
+        }
+
         db.close();
     }
 }

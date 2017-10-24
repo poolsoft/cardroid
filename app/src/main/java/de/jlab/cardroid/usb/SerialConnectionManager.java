@@ -63,7 +63,19 @@ public class SerialConnectionManager {
      */
     public boolean connect() {
         UsbManager manager = (UsbManager) this.context.getSystemService(Context.USB_SERVICE);
-        HashMap<String, UsbDevice> usbDevices = manager.getDeviceList();
+        if (manager == null) {
+            return false;
+        }
+
+        HashMap<String, UsbDevice> usbDevices = new HashMap<>();
+        try {
+            usbDevices = manager.getDeviceList();
+        } catch (Exception e) {
+            // Usually there will only be an exception on emulators.
+            // But maybe weird device implementations exist aswell?
+            Log.e(LOG_TAG, "USB not supported", e);
+            return false;
+        }
         if(usbDevices.isEmpty()) {
             return false;
         }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import de.jlab.cardroid.R;
@@ -22,9 +23,20 @@ public class RemoteControlManagerActivity extends AppCompatActivity {
 
         CarDroidDataOpenHelper dataHelper = new CarDroidDataOpenHelper(this);
 
-        final ListView remoteControlList = (ListView) findViewById(R.id.remote_control_list);
-        this.remoteControlAdapter = new RemoteControlCursorAdapter(this, null);
-        this.remoteControlAdapter.changeCursor(dataHelper.listRemoteControls());
+        dataHelper.createOrUpdateRemoteControl("Steering wheel remote", 128);
+        dataHelper.createOrUpdateRemoteButton("Volume up", 0, 128);
+        dataHelper.createOrUpdateRemoteButton("Volume down", 1, 128);
+        dataHelper.createOrUpdateRemoteButton("Previous", 2, 128);
+        dataHelper.createOrUpdateRemoteButton("Next", 3, 128);
+        dataHelper.createOrUpdateRemoteButton("Play/Pause", 4, 128);
+        dataHelper.createOrUpdateRemoteButton("Voice", 5, 128);
+        dataHelper.createOrUpdateRemoteButton("SRC", 6, 128);
+
+        Cursor testCursor = dataHelper.listRemoteControls();
+
+
+        final ExpandableListView remoteControlList = (ExpandableListView) findViewById(R.id.remote_control_list);
+        this.remoteControlAdapter = new RemoteControlCursorAdapter(dataHelper.listRemoteControls(), this);
         remoteControlList.setAdapter(this.remoteControlAdapter);
 
         this.remoteControlAdapter.setSecondaryItemClickListener(new View.OnClickListener() {

@@ -21,6 +21,14 @@
         />
 
     <Preference
+        android:key="car_remotes"
+        android:title="@string/pref_title_remotes"
+        android:summary="@string/pref_description_remotes">
+        <intent android:targetPackage="de.jlab.cardroid"
+            android:targetClass="de.jlab.cardroid.remotecontrol.RemoteControlManagerActivity"/>
+    </Preference>
+
+    <Preference
         android:key="car_can_sniffer"
         android:title="@string/pref_title_can_sniffer"
         android:summary="@string/pref_description_can_sniffer">
