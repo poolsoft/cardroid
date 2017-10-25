@@ -1,4 +1,6 @@
 <resources>
+    <string name="save">Save</string>
+
     <string name="app_name">CarDroid</string>
     <string name="overlay_permission_missing">Permission to display overlay is missing. Overlay is disabled.</string>
 
@@ -53,6 +55,13 @@
 
     <string name="pref_title_can_sniffer">CAN Sniffer</string>
     <string name="pref_description_can_sniffer">Directly read CAN packets from the car</string>
+
+    <string name="remote_button_edit_title">Edit button %1$d-%2$d</string>
+
+    <string name="action_type_media_event">Media Button</string>
+    <string name="action_type_start_app">Start app</string>
+    <string name="action_type_voice">Voice assistant</string>
+    <string name="action_type_volume_adjust">Adjust volume</string>
 
     <string name="action_exception_action_not_found">Action "%1$s" was not found!</string>
     <string name="action_exception_app_not_found">App "%1$s" was not found!</string>

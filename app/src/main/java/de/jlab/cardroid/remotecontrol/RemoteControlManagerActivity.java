@@ -1,16 +1,13 @@
 package de.jlab.cardroid.remotecontrol;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import de.jlab.cardroid.R;
-import de.jlab.cardroid.storage.CarDroidDataContract;
 import de.jlab.cardroid.storage.CarDroidDataOpenHelper;
+import de.jlab.cardroid.storage.CursorEntityFactory;
 
 public class RemoteControlManagerActivity extends AppCompatActivity {
 
@@ -24,13 +21,13 @@ public class RemoteControlManagerActivity extends AppCompatActivity {
         CarDroidDataOpenHelper dataHelper = new CarDroidDataOpenHelper(this);
 
         dataHelper.createOrUpdateRemoteControl("Steering wheel remote", 128);
-        dataHelper.createOrUpdateRemoteButton("Volume up", 0, 128);
-        dataHelper.createOrUpdateRemoteButton("Volume down", 1, 128);
-        dataHelper.createOrUpdateRemoteButton("Previous", 2, 128);
-        dataHelper.createOrUpdateRemoteButton("Next", 3, 128);
-        dataHelper.createOrUpdateRemoteButton("Play/Pause", 4, 128);
-        dataHelper.createOrUpdateRemoteButton("Voice", 5, 128);
-        dataHelper.createOrUpdateRemoteButton("SRC", 6, 128);
+        dataHelper.createOrUpdateRemoteButton("Volume up", null, 0, 128);
+        dataHelper.createOrUpdateRemoteButton("Volume down", null, 1, 128);
+        dataHelper.createOrUpdateRemoteButton("Previous", null, 2, 128);
+        dataHelper.createOrUpdateRemoteButton("Next", null, 3, 128);
+        dataHelper.createOrUpdateRemoteButton("Play/Pause", null, 4, 128);
+        dataHelper.createOrUpdateRemoteButton("Voice", null, 5, 128);
+        dataHelper.createOrUpdateRemoteButton("SRC", null, 6, 128);
 
         final ExpandableListView remoteControlList = (ExpandableListView) findViewById(R.id.remote_control_list);
         this.remoteControlAdapter = new RemoteControlCursorAdapter(dataHelper.listRemoteControls(), this);
@@ -65,10 +62,14 @@ public class RemoteControlManagerActivity extends AppCompatActivity {
             }
         });
 
-        remoteControlList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        remoteControlList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO show fragment with buttons
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                CursorEntityFactory<RemoteButton> buttonFactory = new CursorEntityFactory<RemoteButton>(RemoteButton.class);
+                RemoteButton button = buttonFactory.createEntity(remoteControlAdapter.getChildrenCursor(remoteControlAdapter.getCursor()));
+                long remoteControlId = remoteControlAdapter.getGroupId(groupPosition);
+                RemoteButtonEditDialog.showDialog(button, RemoteControlManagerActivity.this);
+                return true;
             }
         });
     }

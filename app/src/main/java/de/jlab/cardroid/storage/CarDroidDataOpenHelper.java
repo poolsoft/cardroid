@@ -79,7 +79,7 @@ public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
 
     public Cursor listRemoteButtons(long remoteControlId) {
         final SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID}, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID + "=" + remoteControlId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
+        return db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, CarDroidDataContract.RemoteButton.COLUMN_NAME_ACTION, CarDroidDataContract.RemoteButton.COLUMN_NAME_SERIAL_ID, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID}, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID + "=" + remoteControlId, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
     }
 
     public boolean remoteButtonExists(long serialId, long remoteControlId) {

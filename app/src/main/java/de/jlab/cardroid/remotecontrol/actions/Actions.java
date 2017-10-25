@@ -2,7 +2,9 @@ package de.jlab.cardroid.remotecontrol.actions;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import de.jlab.cardroid.R;
 
@@ -39,5 +41,13 @@ public enum Actions {
         }
 
         throw new ActionException(context.getString(R.string.action_exception_action_not_found, identifier));
+    }
+
+    public static List<String> getIdentifierList() {
+        ArrayList<String> identifierList = new ArrayList<>();
+        for (Actions actionType : Actions.values()) {
+            identifierList.add(actionType.identifier);
+        }
+        return identifierList;
     }
 }
