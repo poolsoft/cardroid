@@ -54,19 +54,19 @@ public class RemoteButtonEditDialog {
                 selection = item;
             }
         }
-        ArrayAdapter<ActionItem> actionAdapter = new ArrayAdapter<ActionItem>(context, android.R.layout.simple_spinner_item, actions);
+        ArrayAdapter<ActionItem> actionAdapter = new ArrayAdapter<ActionItem>(context, android.R.layout.simple_dropdown_item_1line, actions);
         actionSpinner.setAdapter(actionAdapter);
 
         actionSpinner.setSelection(actionAdapter.getPosition(selection));
 
         dialogBuilder.setView(view);
-        dialogBuilder.setTitle(context.getString(R.string.remote_button_edit_title, button.getRemoteControlId(), button.getSerialId()));
+        dialogBuilder.setTitle(context.getString(R.string.remote_button_edit_title, button.getRemoteId(), button.getSerialId()));
         dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 CarDroidDataOpenHelper dataHelper = new CarDroidDataOpenHelper(context);
                 ActionItem action = (ActionItem)actionSpinner.getSelectedItem();
-                dataHelper.createOrUpdateRemoteButton(nameField.getText().toString(), action.identifier, button.getSerialId(), button.getRemoteControlId());
+                dataHelper.createOrUpdateRemoteButton(nameField.getText().toString(), action.identifier, button.getSerialId(), button.getRemoteId());
             }
         });
         dialogBuilder.setNegativeButton(android.R.string.cancel, null);

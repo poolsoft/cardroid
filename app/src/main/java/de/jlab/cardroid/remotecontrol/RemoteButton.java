@@ -3,7 +3,7 @@ package de.jlab.cardroid.remotecontrol;
 public class RemoteButton {
 
     private long id;
-    private long remoteControlId;
+    private long remoteId;
     private long serialId;
     private String name;
     private String action;
@@ -24,12 +24,12 @@ public class RemoteButton {
         this.serialId = serialId;
     }
 
-    public void setRemoteControlId(long remoteControlId) {
-        this.remoteControlId = remoteControlId;
+    public void setRemoteId(long remoteControlId) {
+        this.remoteId = remoteControlId;
     }
 
-    public long getRemoteControlId() {
-        return this.remoteControlId;
+    public long getRemoteId() {
+        return this.remoteId;
     }
 
     public long getSerialId() {
