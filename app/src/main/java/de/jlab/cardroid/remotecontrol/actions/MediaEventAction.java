@@ -2,6 +2,7 @@ package de.jlab.cardroid.remotecontrol.actions;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 
 import java.util.HashMap;
@@ -30,5 +31,10 @@ public class MediaEventAction implements Action {
         audioManager.dispatchMediaKeyEvent(upEvent);
 
         return true;
+    }
+
+    @Override
+    public Fragment createActionSettingsFragment(Context context) {
+        return null;
     }
 }
