@@ -40,4 +40,8 @@ public class RemoteButton {
         return this.name;
     }
 
+    public String getAction() {
+        return this.action;
+    }
+
 }

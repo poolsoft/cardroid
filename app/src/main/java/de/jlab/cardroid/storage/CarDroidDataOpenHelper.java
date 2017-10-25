@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.HashMap;
 
+import de.jlab.cardroid.remotecontrol.RemoteButton;
+
 public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
@@ -128,6 +130,14 @@ public final class CarDroidDataOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return identifier;
+    }
+
+    public RemoteButton getButtonData(long id) {
+        final SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(CarDroidDataContract.RemoteButton.TABLE_NAME, new String[]{CarDroidDataContract.RemoteButton._ID, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME, CarDroidDataContract.RemoteButton.COLUMN_NAME_ACTION, CarDroidDataContract.RemoteButton.COLUMN_NAME_SERIAL_ID, CarDroidDataContract.RemoteButton.COLUMN_NAME_REMOTE_ID}, CarDroidDataContract.RemoteButton._ID + "=" + id, new String[0], null, null, CarDroidDataContract.RemoteButton.COLUMN_NAME_NAME);
+        CursorEntityFactory<RemoteButton> entityFactory = new CursorEntityFactory<>(RemoteButton.class);
+        cursor.moveToFirst();
+        return entityFactory.createEntity(cursor);
     }
 
     public HashMap<String, String> getButtonActionProperties(long serialId, long remoteControlId) {

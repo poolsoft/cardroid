@@ -1,19 +1,12 @@
 package de.jlab.cardroid.remotecontrol;
 
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -52,11 +45,19 @@ public class RemoteButtonEditDialog {
 
         List<String> actionsIdentifiers = Actions.getIdentifierList();
         final List<ActionItem> actions = new ArrayList<>();
+        ActionItem selection = new ActionItem(null, context);
+        actions.add(selection);
         for (String actionIdentifier : actionsIdentifiers) {
-            actions.add(new ActionItem(actionIdentifier, context));
+            ActionItem item = new ActionItem(actionIdentifier, context);
+            actions.add(item);
+            if (actionIdentifier.equals(button.getAction())) {
+                selection = item;
+            }
         }
         ArrayAdapter<ActionItem> actionAdapter = new ArrayAdapter<ActionItem>(context, android.R.layout.simple_spinner_item, actions);
         actionSpinner.setAdapter(actionAdapter);
+
+        actionSpinner.setSelection(actionAdapter.getPosition(selection));
 
         dialogBuilder.setView(view);
         dialogBuilder.setTitle(context.getString(R.string.remote_button_edit_title, button.getRemoteControlId(), button.getSerialId()));

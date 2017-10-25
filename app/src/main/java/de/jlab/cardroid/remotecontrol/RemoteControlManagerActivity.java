@@ -65,9 +65,8 @@ public class RemoteControlManagerActivity extends AppCompatActivity {
         remoteControlList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                CursorEntityFactory<RemoteButton> buttonFactory = new CursorEntityFactory<RemoteButton>(RemoteButton.class);
-                RemoteButton button = buttonFactory.createEntity(remoteControlAdapter.getChildrenCursor(remoteControlAdapter.getCursor()));
-                long remoteControlId = remoteControlAdapter.getGroupId(groupPosition);
+                CarDroidDataOpenHelper dataHelper = new CarDroidDataOpenHelper(RemoteControlManagerActivity.this);
+                RemoteButton button = dataHelper.getButtonData(id);
                 RemoteButtonEditDialog.showDialog(button, RemoteControlManagerActivity.this);
                 return true;
             }

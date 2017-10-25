@@ -58,6 +58,7 @@
 
     <string name="remote_button_edit_title">Edit button %1$d-%2$d</string>
 
+    <string name="action_type_null">No action</string>
     <string name="action_type_media_event">Media Button</string>
     <string name="action_type_start_app">Start app</string>
     <string name="action_type_voice">Voice assistant</string>
