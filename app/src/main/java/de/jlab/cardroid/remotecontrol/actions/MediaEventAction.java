@@ -33,8 +33,7 @@ public class MediaEventAction implements Action {
         return true;
     }
 
-    @Override
-    public Fragment createActionSettingsFragment(Context context) {
+    public ActionSettings createActionSettings(Context context) {
         return null;
     }
 }

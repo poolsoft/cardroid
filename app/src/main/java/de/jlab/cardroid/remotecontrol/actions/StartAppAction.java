@@ -27,4 +27,8 @@ public class StartAppAction implements Action {
         context.startActivity(i);
         return true;
     }
+
+    public ActionSettings createActionSettings(Context context) {
+        return null;
+    }
 }

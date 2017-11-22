@@ -18,4 +18,8 @@ public class VoiceAction implements Action {
         context.startActivity(voiceIntent);
         return true;
     }
+
+    public ActionSettings createActionSettings(Context context) {
+        return null;
+    }
 }

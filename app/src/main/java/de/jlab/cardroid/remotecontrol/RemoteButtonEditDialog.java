@@ -49,9 +49,9 @@ public class RemoteButtonEditDialog {
     }
 
     private void showActionSettings(String identifier, HashMap<String, String> propertyMap) {
-        ActionSettings settings = null;
+        Action action = null;
         try {
-            Action action = Actions.createAction(identifier, propertyMap, this.context);
+            action = Actions.createAction(identifier, propertyMap, this.context);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Cannot create action " + identifier, e);
         }

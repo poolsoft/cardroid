@@ -40,4 +40,8 @@ public class VolumeAdjustAction implements Action {
 
         return true;
     }
+
+    public ActionSettings createActionSettings(Context context) {
+        return null;
+    }
 }
